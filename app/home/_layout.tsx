@@ -33,6 +33,16 @@ export default function HomeLayout() {
           }}
         />
         <Tabs.Screen
+          name="testing"
+          options={{
+            headerShadowVisible: false,
+            tabBarLabel: "Testing",
+            tabBarIcon: ({focused})=>{
+              return focused ? <HomeOrangeSvg /> : <HomeSvg />
+            },
+          }}
+        />
+        <Tabs.Screen
           name="explore"
           options={{
               tabBarLabel: "Explore",
