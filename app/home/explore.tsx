@@ -8,20 +8,24 @@ const Content = styled.View`
 
 const TopSection = styled.View`
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center; /* 中心对齐 */
     align-items: center;
     margin-bottom: 20px;
+    position: relative; /* 允许绝对定位子元素 */
 `;
 
-const NavButton = styled.Text`
+const NavButton = styled.Text<{ position?: 'left' | 'right' }>`
     font-size: 16px;
     color: ${(p) => p.theme.white};
+    position: absolute;
+    ${(props) => (props.position === 'left' ? 'left: 10px;' : 'right: 10px;')};
 `;
 
 const MonthText = styled.Text`
-    color: ${(p) => p.theme.white};
     font-size: 24px;
     font-weight: bold;
+    color: ${(p) => p.theme.white};
+    text-align: center;
 `;
 
 const ProfilePicture = styled.Image`
@@ -79,18 +83,17 @@ export default function ExploreScreen() {
 
         {/* 顶部部分 */}
         <S.TopSection>
-          <S.NavButton>{`< Mar`}</S.NavButton>
-          <S.MonthText>April</S.MonthText>
-          <S.NavButton>{`May >`}</S.NavButton>
-          <S.ProfilePicture source={{uri: 'https://example.com/user-profile.jpg'}} />
+          <S.NavButton position="left">{`← Aug`}</S.NavButton>
+          <S.MonthText>Sep</S.MonthText>
+          <S.NavButton position="right">{`Oct →`}</S.NavButton>
         </S.TopSection>
 
         {/* 日期选择器 */}
         <S.DatePicker>
-          <S.DateCard><Text>4 Sat</Text></S.DateCard>
-          <S.DateCardSelected><Text>5 Sun</Text></S.DateCardSelected>
-          <S.DateCard><Text>6 Mon</Text></S.DateCard>
-          <S.DateCard><Text>7 Tue</Text></S.DateCard>
+          <S.DateCard><Text>1 Sun</Text></S.DateCard>
+          <S.DateCardSelected><Text>2 Mon</Text></S.DateCardSelected>
+          <S.DateCard><Text>3 Tue</Text></S.DateCard>
+          <S.DateCard><Text>4 Wed</Text></S.DateCard>
         </S.DatePicker>
 
         {/* 日程安排 */}

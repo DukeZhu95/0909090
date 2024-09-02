@@ -1,6 +1,8 @@
 import styled from 'styled-components/native'
 import { Text } from 'react-native'
 import ScreenLayout from 'src/components/ScreenLayout'
+// 引入头像图片
+import UserAvatar from 'src/assets/images/Avatar.png';
 
 export default function HomeScreen() {
   return (
@@ -8,9 +10,12 @@ export default function HomeScreen() {
       <S.Content testID="home-screen-content">
         {/* 顶部部分 */}
         <S.TopSection>
-          <S.LeftNavButton>{`< Mar`}</S.LeftNavButton>
-          <S.MonthText>April</S.MonthText>
-          <S.RightNavButton>{`May >`}</S.RightNavButton>
+          <S.DateText>Thursday</S.DateText>
+          <S.DateBigText>29 August</S.DateBigText>
+          <S.GreetingText>Hi Duke.</S.GreetingText>
+          <S.TaskText>5 Tasks are pending</S.TaskText>
+          {/* 添加用户头像 */}
+          <S.Avatar source={UserAvatar} />
         </S.TopSection>
 
         {/* 任务信息 */}
@@ -44,32 +49,29 @@ export default function HomeScreen() {
   )
 }
 
+// 定义 TaskCard 组件时，明确指定它接受 color 属性
+const TaskCard = styled.View<{ color: string }>`
+  background-color: ${(p) => p.color};
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  width: 48%;  /* 确保两行排列，适应小屏幕 */
+`;
+
 const S = {
+  Avatar: styled.Image`
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100px;
+      height: 100px;
+      border-radius: 25px; /* 圆形头像 */
+  `,
   Content: styled.View`
       padding: 20px;
   `,
   TopSection: styled.View`
-      flex-direction: row;
-      justify-content: space-between; /* 使左右按钮和中间文本之间的距离均等 */
-      align-items: center;
       margin-bottom: 20px;
-  `,
-  LeftNavButton: styled.Text`
-      font-size: 16px;
-      color: ${(p) => p.theme.white};
-  `,
-  RightNavButton: styled.Text`
-      font-size: 16px;
-      color: ${(p) => p.theme.white};
-      padding-right: 20px; /* 向右移动 */
-  `,
-  MonthText: styled.Text`
-      font-size: 24px;
-      font-weight: bold;
-      color: ${(p) => p.theme.white};
-      text-align: center;
-      flex: 1; /* 确保月份文本占据可用空间，从而实现居中 */
-      padding-left: 10px; /* 向右移动 */
   `,
   DateText: styled.Text`
       color: ${(p) => p.theme.white};
@@ -101,11 +103,5 @@ const S = {
       flex-wrap: wrap;
       justify-content: space-between;
   `,
-  TaskCard: styled.View`
-      background-color: ${(p) => p.color};
-      width: 48%;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-  `,
+  TaskCard,
 }
