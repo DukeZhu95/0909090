@@ -83,6 +83,9 @@ const S = {
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+      background-color: #FFFFFF;  // 添加白色背景
+      padding: 15px;  // 添加内边距以避免内容紧贴容器边缘
+      border-radius: 10px;  // 圆角处理，使其看起来更加美观
   `,
   TaskDetails: styled.View`
       flex: 1;
@@ -95,7 +98,7 @@ const S = {
   BackButton: styled.View`
       width: 40px;
       height: 40px;
-      background-color: ${(p) => p.theme.gray};
+      background-color: ${(p) => p.theme.white};
       border-radius: 20px;
       margin-right: 10px;
   `,
@@ -115,7 +118,7 @@ const S = {
   `,
   Section: styled.View`
       margin-bottom: 20px;
-      background-color: #FFC0CB;  // 设置淡粉色背景
+      background-color: #FFC0CB;  // 保持淡粉色背景
       padding: 15px;
       border-radius: 10px;
   `,
@@ -123,22 +126,22 @@ const S = {
       font-size: 18px;
       font-weight: bold;
       margin-bottom: 10px;
-      color: #333333;  // 设置深色字体，确保在淡粉色背景上清晰可见
+      color: #333333;  // 深色字体
   `,
   CheckItem: styled.View`
       flex-direction: row;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 20px;  // 增大底部间距以增加项目卡间距
   `,
   CheckBox: styled.View`
       width: 20px;
       height: 20px;
-      border: 1px solid ${(p) => p.theme.gray};
+      border: 1px solid ${(p) => p.theme.black};
       border-radius: 4px;
       margin-right: 10px;
   `,
   CheckItemText: styled.Text`
-    color: #333333;  // 设置深色字体，确保可读性
+      color: #333333;  // 深色字体
   `,
   BottomBar: styled.View`
       flex-direction: row;
@@ -163,4 +166,3 @@ const S = {
       border-radius: 10px;
   `,
 };
-
