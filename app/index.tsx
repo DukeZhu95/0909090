@@ -1,5 +1,5 @@
 import styled from 'styled-components/native'
-import {  Link, Stack } from 'expo-router'
+import {  Link } from 'expo-router'
 import LinkButton from 'src/components/LinkButton'
 import ScreenLayout from 'src/components/ScreenLayout'
 import LoginSignup from 'src/components/LoginSignup'
