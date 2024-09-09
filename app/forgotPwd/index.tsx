@@ -37,7 +37,7 @@ const S = {
     font-weight: 900;
     font-size: ${(p) => p.theme.size(36, 'px')};
     margin-bottom: ${(p) => p.theme.size(90, 'px')};
-  `
+  `//12345678
 }
 
 
