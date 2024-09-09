@@ -1,27 +1,49 @@
 import styled from 'styled-components/native'
-import { Stack, useRouter } from 'expo-router'
 import ScreenLayout from 'src/components/ScreenLayout'
-
-
 import TextInputWrapper from 'src/components/TextInputWrapper'
 import ButtonWrapper from 'src/components/ButtonWrapper'
-import { toastShow } from 'src/utils/toast'
 import StackScreenHeader from 'src/components/StackScreenHeader'
+import { useState } from 'react'
 
 export default function ForgetPwdScreen() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch('/api/user/forgot-password', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+      });
+      console.log("handleSubmit====res:",response);
+      console.log('Password reset link sent to your email.');
+      // router.push('/login'); // Navigate to login screen or wherever appropriate
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <ScreenLayout >
       <S.Content>
         <StackScreenHeader  />
         <S.Title>
-            Forgot Password
+          Forgot Password
         </S.Title>
-        <TextInputWrapper placeholder='Email Address'/>
-        <TextInputWrapper placeholder='Password' textContentType="password" secureTextEntry={true} />
-        
-        <ButtonWrapper  title='Submit' />
-        
+        <TextInputWrapper
+          placeholder='Email Address'
+          value={email}
+          onChangeText={setEmail}
+          keyboardType='email-address'
+        />
+        <TextInputWrapper
+          placeholder='Password'
+          textContentType='password'
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+        <ButtonWrapper title='Submit' onPress={handleSubmit} />
       </S.Content>
     </ScreenLayout>
   )
@@ -29,15 +51,15 @@ export default function ForgetPwdScreen() {
 
 const S = {
   Content: styled.View`
-    padding: 0 ${(p) => p.theme.size(45, 'px')};
+      padding: 0 ${(p) => p.theme.size(45, 'px')};
   `,
   Title: styled.Text`
-    color: ${(p) => p.theme.orange};
-    font-family: helvetica;
-    font-weight: 900;
-    font-size: ${(p) => p.theme.size(36, 'px')};
-    margin-bottom: ${(p) => p.theme.size(90, 'px')};
-  `//12345678
+      color: ${(p) => p.theme.orange};
+      font-family: helvetica;
+      font-weight: 900;
+      font-size: ${(p) => p.theme.size(36, 'px')};
+      margin-bottom: ${(p) => p.theme.size(90, 'px')};
+  `
 }
 
 
