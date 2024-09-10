@@ -1,5 +1,6 @@
 {
   "name": "soon",
+  "proxy": "http://localhost:8080",
   "scripts": {
     "build:android": "npx eas-cli build -p android --profile preview --local",
     "build:ios": "npx eas-cli build -p ios --profile preview --local",
@@ -29,7 +30,7 @@
     "@rn-primitives/types": "^1.0.3",
     "ahooks": "^3.7.10",
     "axios": "^1.6.8",
-    "expo": "^50.0.4",
+    "expo": "^50.0.20",
     "expo-dev-client": "~3.3.7",
     "expo-font": "~11.10.2",
     "expo-linking": "~6.2.2",
