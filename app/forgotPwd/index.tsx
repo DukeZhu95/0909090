@@ -4,6 +4,7 @@ import TextInputWrapper from 'src/components/TextInputWrapper'
 import ButtonWrapper from 'src/components/ButtonWrapper'
 import StackScreenHeader from 'src/components/StackScreenHeader'
 import { useState } from 'react'
+const baseUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export default function ForgetPwdScreen() {
   const [email, setEmail] = useState('');
@@ -11,8 +12,11 @@ export default function ForgetPwdScreen() {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch('/api/user/forgot-password', {
+      const response = await fetch(`${baseUrl}/api/User/forgotPwd`, {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({ email, password }),
       });
       console.log("handleSubmit====res:",response);
