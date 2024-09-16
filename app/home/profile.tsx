@@ -1,8 +1,20 @@
+import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { TextInput, TouchableOpacity, Text } from 'react-native';
 import ScreenLayout from 'src/components/ScreenLayout';
 import UserAvatar from 'src/assets/images/Avatar.png'; // Ensure the avatar image path is correct
-import { useState } from 'react';
+
+interface EditButtonProps {
+  isEditable: boolean;
+  onPress: () => void;
+}
+
+interface InputProps {
+  isEditable?: boolean;
+  editable?: boolean;
+  value: string;
+  secureTextEntry?: boolean;
+}
 
 export default function ProfileScreen() {
   const [isEditable, setIsEditable] = useState(false);
@@ -42,6 +54,7 @@ export default function ProfileScreen() {
           <S.Input
             value="••••••••"
             editable={isEditable}
+            isEditable={isEditable}
             secureTextEntry={true}
           />
         </S.ProfileField>
@@ -51,6 +64,7 @@ export default function ProfileScreen() {
           <S.Input
             value="1234@test.com"
             editable={isEditable}
+            isEditable={isEditable}
           />
         </S.ProfileField>
 
@@ -59,6 +73,7 @@ export default function ProfileScreen() {
           <S.Input
             value="xxx-xxx-4567"
             editable={isEditable}
+            isEditable={isEditable}
           />
         </S.ProfileField>
 
@@ -67,6 +82,7 @@ export default function ProfileScreen() {
           <S.Input
             value="Hamilton, WAIKATO"
             editable={isEditable}
+            isEditable={isEditable}
           />
         </S.ProfileField>
       </S.Content>
@@ -76,58 +92,58 @@ export default function ProfileScreen() {
 
 const S = {
   Content: styled.View`
-      padding: 20px;
+    padding: 20px;
   `,
   ProfileHeader: styled.View`
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between; /* Align items properly */
-      margin-bottom: 30px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
   `,
   Avatar: styled.Image`
-      width: 80px;
-      height: 80px;
-      border-radius: 40px;
-      margin-right: 20px;
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    margin-right: 20px;
   `,
   UserInfo: styled.View`
-      flex-direction: column;
+    flex-direction: column;
   `,
   UserName: styled.Text`
-      font-size: 20px;
-      font-weight: bold;
-      color: ${(p) => p.theme.white};
+    font-size: 20px;
+    font-weight: bold;
+    color: ${(p) => p.theme.white};
   `,
   UserEmail: styled.Text`
-      font-size: 16px;
-      color: ${(p) => p.theme.white};
+    font-size: 16px;
+    color: ${(p) => p.theme.white};
   `,
   ProfileField: styled.View`
-      margin-bottom: 20px;
+    margin-bottom: 20px;
   `,
   Label: styled.Text`
-      font-size: 16px;
-      font-weight: bold;
-      color: ${(p) => p.theme.white};
-      margin-bottom: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    color: ${(p) => p.theme.white};
+    margin-bottom: 5px;
   `,
-  Input: styled(TextInput)`
-      border: 1px solid ${(p) => p.theme.white};
-      padding: 10px;
-      border-radius: 5px;
-      background-color: ${(p) => (p.editable ? p.theme.white : 'lightgray')};
-      color: ${(p) => p.theme.black};
-      font-weight: ${(p) => (p.editable ? 'normal' : 'bold')}; /* Font is bold when not editable */
+  Input: styled(TextInput)<InputProps>`
+    border: 1px solid ${(p) => p.theme.white};
+    padding: 10px;
+    border-radius: 5px;
+    background-color: ${(p) => (p.isEditable ? p.theme.white : 'lightgray')};
+    color: ${(p) => p.theme.black};
+    font-weight: ${(p) => (p.isEditable ? 'normal' : 'bold')};
   `,
-  EditButton: styled(TouchableOpacity)`
-      background-color: ${(props) => (props.isEditable ? '#6366F1' : '#FFC0CB')}; /* Changes background to blue for Save */
-      padding: 10px 20px; /* Increased button size */
-      border-radius: 10px; /* Rounded corners */
-      justify-content: center;
-      align-items: center;
+  EditButton: styled(TouchableOpacity)<EditButtonProps>`
+    background-color: ${(props) => (props.isEditable ? '#6366F1' : '#FFC0CB')};
+    padding: 10px 20px;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
   `,
   EditButtonText: styled(Text)`
-      color: white;
-      font-weight: bold;
+    color: white;
+    font-weight: bold;
   `,
 };

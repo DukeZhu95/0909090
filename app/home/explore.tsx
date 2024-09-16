@@ -1,6 +1,7 @@
-import styled from 'styled-components/native'
-import { Text } from 'react-native'
-import ScreenLayout from 'src/components/ScreenLayout'
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components/native';
+import { Text, TouchableOpacity, FlatList, View, ScrollView } from 'react-native';
+import ScreenLayout from 'src/components/ScreenLayout';
 
 const Content = styled.View`
     padding: 20px;
@@ -8,17 +9,9 @@ const Content = styled.View`
 
 const TopSection = styled.View`
     flex-direction: row;
-    justify-content: center; /* 中心对齐 */
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    position: relative; /* 允许绝对定位子元素 */
-`;
-
-const NavButton = styled.Text<{ position?: 'left' | 'right' }>`
-    font-size: 16px;
-    color: ${(p) => p.theme.white};
-    position: absolute;
-    ${(props) => (props.position === 'left' ? 'left: 10px;' : 'right: 10px;')};
 `;
 
 const MonthText = styled.Text`
@@ -28,16 +21,19 @@ const MonthText = styled.Text`
     text-align: center;
 `;
 
-const ProfilePicture = styled.Image`
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
+const NavButton = styled.Text`
+    font-size: 16px;
+    color: ${(p) => p.theme.white};
 `;
 
 const DatePicker = styled.View`
+    margin-bottom: 20px;
+`;
+
+const DateRow = styled.View`
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 `;
 
 const DateCard = styled.View`
@@ -45,11 +41,24 @@ const DateCard = styled.View`
     padding: 10px;
     border-radius: 10px;
     align-items: center;
-    width: 20%;
+    width: 40px;
+    height: 60px;
+    justify-content: center;
+    margin-right: 5px;
 `;
 
 const DateCardSelected = styled(DateCard)`
     background-color: ${(p) => p.theme.white};
+`;
+
+const DateText = styled.Text`
+    color: ${(p) => p.theme.white};
+    font-size: 16px;
+`;
+
+const DayText = styled.Text`
+    color: ${(p) => p.theme.white};
+    font-size: 12px;
 `;
 
 const Schedule = styled.View`
@@ -63,58 +72,133 @@ const TaskCard = styled.View<{ color: string }>`
     margin-bottom: 10px;
 `;
 
+const TaskText = styled.Text`
+    color: ${(p) => p.theme.white};
+    margin-bottom: 5px;
+`;
+
 const S = {
   Content,
   TopSection,
-  NavButton,
   MonthText,
-  ProfilePicture,
+  NavButton,
   DatePicker,
+  DateRow,
   DateCard,
   DateCardSelected,
+  DateText,
+  DayText,
   Schedule,
   TaskCard,
+  TaskText,
 };
 
+// Mock task data
+const taskData = [
+  { id: '1', title: 'Bore Inspection', date: '2024-04-05', location: '77 Cow Road, Dairytown', color: '#EF4444' },
+  { id: '2', title: 'Dairy Discharge Monitoring', date: '2024-04-05', location: '592 Ohauiti Road, Ohauiti 3171', color: '#3B82F6' },
+  { id: '3', title: 'Noxious Weed Control', date: '2024-04-05', location: '', color: '#EF4444' },
+];
+
+interface Task {
+  id: string;
+  title: string;
+  date: string;
+  location?: string;
+  color: string;
+}
+
 export default function ExploreScreen() {
+  const [currentMonth, setCurrentMonth] = useState(new Date(2024, 8, 1)); // September 2024
+  const [selectedDate, setSelectedDate] = useState(new Date(2024, 8, 1)); // First day of September 2024
+  const [tasks, setTasks] = useState<Task[]>(taskData);
+
+  const handleMonthChange = (direction: 'prev' | 'next') => {
+    setCurrentMonth(prevMonth => {
+      const newMonth = new Date(prevMonth);
+      newMonth.setMonth(prevMonth.getMonth() + (direction === 'next' ? 1 : -1));
+      return newMonth;
+    });
+  };
+
+  const getDaysInMonth = (year: number, month: number) => {
+    return new Date(year, month + 1, 0).getDate();
+  };
+
+  const getMonthDates = () => {
+    const year = currentMonth.getFullYear();
+    const month = currentMonth.getMonth();
+    const daysInMonth = getDaysInMonth(year, month);
+    const dates = [];
+
+    for (let i = 1; i <= daysInMonth; i++) {
+      const date = new Date(year, month, i);
+      dates.push(date);
+    }
+
+    return dates;
+  };
+
+  useEffect(() => {
+    // Update selected date when month changes
+    setSelectedDate(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1));
+  }, [currentMonth]);
+
+  const handleTaskPress = (taskId: string) => {
+    console.log(`Task ${taskId} pressed`);
+    // Add navigation logic to task detail page here
+  };
+
+  const renderTaskItem = ({ item }: { item: Task }) => (
+    <TouchableOpacity onPress={() => handleTaskPress(item.id)}>
+      <S.TaskCard color={item.color}>
+        <S.TaskText>{item.title}</S.TaskText>
+        <S.TaskText>{item.date}</S.TaskText>
+        {item.location && <S.TaskText>{item.location}</S.TaskText>}
+      </S.TaskCard>
+    </TouchableOpacity>
+  );
+
+  const renderDateCard = (date: Date) => {
+    const isSelected = date.toDateString() === selectedDate.toDateString();
+    const CardComponent = isSelected ? S.DateCardSelected : S.DateCard;
+    return (
+      <TouchableOpacity key={date.toISOString()} onPress={() => setSelectedDate(date)}>
+        <CardComponent>
+          <S.DateText style={isSelected ? {color: 'black'} : {}}>{date.getDate()}</S.DateText>
+          <S.DayText style={isSelected ? {color: 'black'} : {}}>{date.toLocaleString('en-US', { weekday: 'short' })}</S.DayText>
+        </CardComponent>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <ScreenLayout testID="explore-screen-layout">
       <S.Content testID="explore-screen-content">
-
-        {/* 顶部部分 */}
         <S.TopSection>
-          <S.NavButton position="left">{`← Aug`}</S.NavButton>
-          <S.MonthText>Sep</S.MonthText>
-          <S.NavButton position="right">{`Oct →`}</S.NavButton>
+          <TouchableOpacity onPress={() => handleMonthChange('prev')}>
+            <S.NavButton>{'< '}{new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1).toLocaleString('en-US', { month: 'short' })}</S.NavButton>
+          </TouchableOpacity>
+          <S.MonthText>{currentMonth.toLocaleString('en-US', { year: 'numeric', month: 'long' })}</S.MonthText>
+          <TouchableOpacity onPress={() => handleMonthChange('next')}>
+            <S.NavButton>{new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1).toLocaleString('en-US', { month: 'short' })}{' >'}</S.NavButton>
+          </TouchableOpacity>
         </S.TopSection>
 
-        {/* 日期选择器 */}
         <S.DatePicker>
-          <S.DateCard><Text>1 Sun</Text></S.DateCard>
-          <S.DateCardSelected><Text>2 Mon</Text></S.DateCardSelected>
-          <S.DateCard><Text>3 Tue</Text></S.DateCard>
-          <S.DateCard><Text>4 Wed</Text></S.DateCard>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {getMonthDates().map(renderDateCard)}
+          </ScrollView>
         </S.DatePicker>
 
-        {/* 日程安排 */}
         <S.Schedule>
-          <S.TaskCard color="#EF4444">
-            <Text>Bore Inspection</Text>
-            <Text>05/04/2024</Text>
-            <Text>77 Cow Road, Dairytown</Text>
-          </S.TaskCard>
-          <S.TaskCard color="#3B82F6">
-            <Text>Dairy Discharge Monitoring</Text>
-            <Text>05/04/2024</Text>
-            <Text>592 Ohauiti Road, Ohauiti 3171</Text>
-          </S.TaskCard>
-          <S.TaskCard color="#EF4444">
-            <Text>Noxious Weed Control</Text>
-            <Text>05/04/2024</Text>
-          </S.TaskCard>
+          <FlatList
+            data={tasks}
+            renderItem={renderTaskItem}
+            keyExtractor={item => item.id}
+          />
         </S.Schedule>
-
       </S.Content>
     </ScreenLayout>
-  )
+  );
 }
