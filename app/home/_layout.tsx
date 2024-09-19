@@ -54,7 +54,7 @@ export default function HomeLayout() {
         <Tabs.Screen
           name="chat"
           options={{
-              tabBarBadge: 1,
+              // tabBarBadge: 1,
               tabBarBadgeStyle: {left: 10,position: "absolute"},
               tabBarLabel: "Chat",
               tabBarIcon: ({focused})=>{

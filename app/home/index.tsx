@@ -16,7 +16,6 @@ type RootStackParamList = {
 // 定义导航属性的类型
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
-
 export default function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
 

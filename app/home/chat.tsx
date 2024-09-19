@@ -1,11 +1,22 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { Text, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import ScreenLayout from 'src/components/ScreenLayout';
 import { Svg, Path, Rect } from 'react-native-svg';
-
 // 引入用户头像图片
 import UserAvatar from 'src/assets/images/Avatar.png';
+import { StackNavigationProp } from '@react-navigation/stack'
+
+// 定义应用的路由参数
+type RootStackParamList = {
+  chat: undefined;
+  explore: undefined;
+  // 添加其他路由...
+};
+
+// 定义导航属性的类型
+type ChatScreenNavigationProp = StackNavigationProp<RootStackParamList, 'chat'>;
 
 // SVG 图标组件
 const BackIcon = () => (
@@ -75,13 +86,19 @@ const BottomBar = () => (
 );
 
 export default function ChatScreen() {
+  const navigation = useNavigation<ChatScreenNavigationProp>();
+
+  const handleBackPress = () => {
+    navigation.navigate('explore');  // 确保 'explore' 匹配您的路由名称
+  };
+
   return (
     <ScreenLayout testID="chat-screen-layout">
       <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
         <S.Content testID="chat-screen-content">
           {/* 顶部任务信息 */}
           <S.TaskInfo>
-            <S.BackButton>
+            <S.BackButton onPress={handleBackPress}>
               <BackIcon />
             </S.BackButton>
             <S.TaskDetails>
