@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import { Text, TouchableOpacity, FlatList, View, ScrollView } from 'react-native';
+import { TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import ScreenLayout from 'src/components/ScreenLayout';
 
 const Content = styled.View`
@@ -111,7 +111,7 @@ interface Task {
 export default function ExploreScreen() {
   const [currentMonth, setCurrentMonth] = useState(new Date(2024, 8, 1)); // September 2024
   const [selectedDate, setSelectedDate] = useState(new Date(2024, 8, 1)); // First day of September 2024
-  const [tasks, setTasks] = useState<Task[]>(taskData);
+  const [tasks] = useState<Task[]>(taskData);
 
   const handleMonthChange = (direction: 'prev' | 'next') => {
     setCurrentMonth(prevMonth => {
@@ -174,31 +174,33 @@ export default function ExploreScreen() {
 
   return (
     <ScreenLayout testID="explore-screen-layout">
-      <S.Content testID="explore-screen-content">
-        <S.TopSection>
-          <TouchableOpacity onPress={() => handleMonthChange('prev')}>
-            <S.NavButton>{'< '}{new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1).toLocaleString('en-US', { month: 'short' })}</S.NavButton>
-          </TouchableOpacity>
-          <S.MonthText>{currentMonth.toLocaleString('en-US', { year: 'numeric', month: 'long' })}</S.MonthText>
-          <TouchableOpacity onPress={() => handleMonthChange('next')}>
-            <S.NavButton>{new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1).toLocaleString('en-US', { month: 'short' })}{' >'}</S.NavButton>
-          </TouchableOpacity>
-        </S.TopSection>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <S.Content testID="explore-screen-content">
+          <S.TopSection>
+            <TouchableOpacity onPress={() => handleMonthChange('prev')}>
+              <S.NavButton>{'< '}{new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1).toLocaleString('en-US', { month: 'short' })}</S.NavButton>
+            </TouchableOpacity>
+            <S.MonthText>{currentMonth.toLocaleString('en-US', { year: 'numeric', month: 'long' })}</S.MonthText>
+            <TouchableOpacity onPress={() => handleMonthChange('next')}>
+              <S.NavButton>{new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1).toLocaleString('en-US', { month: 'short' })}{' >'}</S.NavButton>
+            </TouchableOpacity>
+          </S.TopSection>
 
-        <S.DatePicker>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {getMonthDates().map(renderDateCard)}
-          </ScrollView>
-        </S.DatePicker>
+          <S.DatePicker>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {getMonthDates().map(renderDateCard)}
+            </ScrollView>
+          </S.DatePicker>
 
-        <S.Schedule>
-          <FlatList
-            data={tasks}
-            renderItem={renderTaskItem}
-            keyExtractor={item => item.id}
-          />
-        </S.Schedule>
-      </S.Content>
+          <S.Schedule>
+            <FlatList
+              data={tasks}
+              renderItem={renderTaskItem}
+              keyExtractor={item => item.id}
+            />
+          </S.Schedule>
+        </S.Content>
+      </ScrollView>
     </ScreenLayout>
   );
 }
