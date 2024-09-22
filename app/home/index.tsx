@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { TouchableOpacity, ScrollView } from 'react-native';
+import { TouchableOpacity, ScrollView, View } from 'react-native';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import ScreenLayout from 'src/components/ScreenLayout';
 import UserAvatar from 'src/assets/images/Avatar.png'
+import WeatherModule from './weatherModule'; // 假设我们在同一目录创建了这个组件
 
 // 定义应用的路由参数
 type RootStackParamList = {
@@ -52,19 +53,24 @@ export default function HomeScreen() {
   const handleAvatarPress = () => {
     navigation.navigate('profile');
   };
+
   return (
     <ScreenLayout testID="home-screen-layout">
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <S.Content testID="home-screen-content">
           <S.TopSection>
-            <DynamicCalendar />
-            <TouchableOpacity onPress={handleAvatarPress}>
-              <S.Avatar source={UserAvatar} />
-            </TouchableOpacity>
+            <View>
+              <DynamicCalendar />
+              <WeatherModule />
+            </View>
+            <S.UserSection>
+              <TouchableOpacity onPress={handleAvatarPress}>
+                <S.Avatar source={UserAvatar} />
+              </TouchableOpacity>
+              <S.GreetingText>Hi Duke.</S.GreetingText>
+              <S.TaskText>5 Tasks are pending</S.TaskText>
+            </S.UserSection>
           </S.TopSection>
-
-          <S.GreetingText>Hi Duke.</S.GreetingText>
-          <S.TaskText>5 Tasks are pending</S.TaskText>
 
           <S.MonthlyPreviewTitle>Monthly Preview</S.MonthlyPreviewTitle>
           <S.MonthlyPreview>
@@ -132,7 +138,10 @@ const S = {
       flex-direction: row;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
+  `,
+  UserSection: styled.View`
+    align-items: flex-end;
   `,
   TopLeftContent: styled.View`
       flex: 1;
@@ -154,14 +163,14 @@ const S = {
   `,
   GreetingText: styled.Text`
       color: black;
-      font-size: 24px;
-      margin-top: 0;
+      font-size: 18px;
+      margin-top: 10px;
   `,
   TaskText: styled.Text`
       font-size: 14px;
       color: black;
       opacity: 0.7;
-      margin-bottom: 30px;
+      // margin-bottom: 30px;
   `,
   TaskTitle: styled.Text`
       color: black;

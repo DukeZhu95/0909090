@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import { Pressable, ScrollView } from 'react-native';
+import { Alert, Pressable, ScrollView } from 'react-native'
 import ScreenLayout from 'src/components/ScreenLayout';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+// 定义应用的路由参数
+type RootStackParamList = {
+  home: undefined;
+  chat: undefined;
+  // 添加其他路由...
+};
+
+type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 // Styled components
 const Content = styled.View`
@@ -151,16 +162,10 @@ const taskData: Task[] = [
 ];
 
 export default function ExploreScreen() {
+  const navigation = useNavigation<NavigationProp>();
   const [currentMonth, setCurrentMonth] = useState(new Date(2024, 8, 22)); // September 2024
   const [selectedDate, setSelectedDate] = useState(new Date(2024, 8, 22)); // September 22, 2024
   const [tasks] = useState<Task[]>(taskData);
-
-  // 在主组件中
-  useEffect(() => {
-    console.log('Component mounted or updated');
-    console.log('Current tasks:', tasks);
-    console.log('Selected date:', selectedDate.toDateString());
-  }, [tasks, selectedDate]);
 
   const handleMonthChange = (direction: 'prev' | 'next') => {
     setCurrentMonth(prevMonth => {
@@ -231,7 +236,7 @@ export default function ExploreScreen() {
           top={top}
           height={height}
           color={task.color}
-          onPress={() => handleTaskPress(task.id)}
+          onPress={() => handleTaskPress(task.id, task.title)}
         >
           <TaskTitle>{task.title}</TaskTitle>
           <TaskDetails>{`${task.startTime} - ${task.endTime}`}</TaskDetails>
@@ -241,9 +246,16 @@ export default function ExploreScreen() {
     });
   };
 
-  const handleTaskPress = (taskId: string) => {
+  const handleTaskPress = (taskId: string, title: string) => {
     console.log(`Task ${taskId} pressed`);
-    // Add navigation logic to task detail page here
+    if (title === 'Bore Inspection') {
+      navigation.navigate('chat');
+    } else {
+      // 对于其他事件，我们只打印一条消息
+      console.log(`Clicked on task: ${title}`);
+      // 可以添加一些视觉反馈，比如 Alert
+      Alert.alert('Task Clicked', `You clicked on ${title}`);
+    }
   };
 
   const renderDateCard = (date: Date) => {
