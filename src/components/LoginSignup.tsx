@@ -35,7 +35,7 @@ export default function LoginSignup(props: Props){
 
 const S = {
     Title: styled.Text`
-      color: ${(p) => p.theme.orange};
+      color: ${(p) => p.theme.black};
       font-family: helvetica;
       font-weight: 900;
       font-size: ${(p) => p.theme.size(36, 'px')};

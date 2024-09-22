@@ -22,20 +22,20 @@ export default function LinkButton({ href, text }: Props) {
 const S = {
   ExternalLink: styled.TouchableOpacity`
     padding: ${(p) => p.theme.size(10, 'px')} ${(p) => p.theme.size(20, 'px')};
-    border-color: ${(p) => p.theme.highlight};
+    border-color: ${(p) => p.theme.PURPLE};
     border-width: ${(p) => p.theme.size(1, 'px')};
     border-radius: ${(p) => p.theme.size(5, 'px')};
     background-color: transparent;
   `,
   InternalLink: styled(Link)`
     padding: ${(p) => p.theme.size(10, 'px')} ${(p) => p.theme.size(20, 'px')};
-    border-color: ${(p) => p.theme.highlight};
+    border-color: ${(p) => p.theme.PURPLE};
     border-width: ${(p) => p.theme.size(1, 'px')};
     border-radius: ${(p) => p.theme.size(5, 'px')};
     background-color: transparent;
   `,
   LinkText: styled.Text`
-    color: ${(p) => p.theme.highlight};
+    color: ${(p) => p.theme.PURPLE};
     font-weight: 600;
   `
 }

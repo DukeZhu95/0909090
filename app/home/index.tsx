@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react'
 import { TouchableOpacity, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
@@ -16,6 +16,36 @@ type RootStackParamList = {
 // 定义导航属性的类型
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
+const DynamicCalendar = () => {
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentDate(new Date());
+    }, 60000); // 每分钟更新一次
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const dayOfWeek = currentDate.toLocaleString('en-US', { weekday: 'long' });
+  const month = currentDate.toLocaleString('en-US', { month: 'long' });
+  const date = currentDate.getDate();
+  const year = currentDate.getFullYear();
+
+  return (
+    <S.CalendarContainer>
+      <S.DayText>{dayOfWeek}</S.DayText>
+      <S.DateContainer>
+        <S.DateNumber>{date}</S.DateNumber>
+        <S.MonthYearContainer>
+          <S.MonthText>{month}</S.MonthText>
+          <S.YearText>{year}</S.YearText>
+        </S.MonthYearContainer>
+      </S.DateContainer>
+    </S.CalendarContainer>
+  );
+};
+
 export default function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
 
@@ -27,10 +57,7 @@ export default function HomeScreen() {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <S.Content testID="home-screen-content">
           <S.TopSection>
-            <S.TopLeftContent>
-              <S.DateText>Sunday</S.DateText>
-              <S.DateBigText>5 April</S.DateBigText>
-            </S.TopLeftContent>
+            <DynamicCalendar />
             <TouchableOpacity onPress={handleAvatarPress}>
               <S.Avatar source={UserAvatar} />
             </TouchableOpacity>
@@ -41,15 +68,15 @@ export default function HomeScreen() {
 
           <S.MonthlyPreviewTitle>Monthly Preview</S.MonthlyPreviewTitle>
           <S.MonthlyPreview>
-            <S.TaskCard1 color="#4ade80">
+            <S.TaskCard1 color="#4C49ED">
               <S.TaskCardNumber>22</S.TaskCardNumber>
               <S.TaskCardText>Done</S.TaskCardText>
             </S.TaskCard1>
-            <S.TaskCard2 color="#fbbf24">
+            <S.TaskCard2 color="#2D60FF">
               <S.TaskCardNumber>7</S.TaskCardNumber>
               <S.TaskCardText>In Progress</S.TaskCardText>
             </S.TaskCard2>
-            <S.TaskCard3 color="#fb7185">
+            <S.TaskCard3 color="#0A06F4">
               <S.TaskCardNumber>12</S.TaskCardNumber>
               <S.TaskCardText>Pending</S.TaskCardText>
             </S.TaskCard3>
@@ -65,9 +92,41 @@ export default function HomeScreen() {
 }
 
 const S = {
+  CalendarContainer: styled.View`
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  `,
+  DayText: styled.Text`
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 5px;
+  `,
+  DateContainer: styled.View`
+    flex-direction: row;
+    align-items: center;
+  `,
+  DateNumber: styled.Text`
+    font-size: 40px;
+    font-weight: bold;
+    color: #000;
+    margin-right: 10px;
+  `,
+  MonthYearContainer: styled.View`
+    flex-direction: column;
+  `,
+  MonthText: styled.Text`
+    font-size: 18px;
+    color: #333;
+  `,
+  YearText: styled.Text`
+    font-size: 14px;
+    color: #666;
+  `,
   Content: styled.View`
       padding: 20px;
-      background-color: #121212;
+      background-color: #fffefe;
   `,
   TopSection: styled.View`
       flex-direction: row;
@@ -84,38 +143,38 @@ const S = {
       border-radius: 20px;
   `,
   DateText: styled.Text`
-      color: #FFFFFF;
+      color: black;
       font-size: 14px;
       opacity: 0.7;
   `,
   DateBigText: styled.Text`
-      color: #FFFFFF;
+      color: black;
       font-size: 28px;
       font-weight: bold;
   `,
   GreetingText: styled.Text`
-      color: #FFFFFF;
+      color: black;
       font-size: 24px;
       margin-top: 0;
   `,
   TaskText: styled.Text`
       font-size: 14px;
-      color: #FFFFFF;
+      color: black;
       opacity: 0.7;
       margin-bottom: 30px;
   `,
   TaskTitle: styled.Text`
-      color: #FFFFFF;
+      color: black;
       font-size: 18px;
       font-weight: bold;
   `,
   TaskSubtitle: styled.Text`
-      color: #FFFFFF;
+      color: black;
       font-size: 14px;
       opacity: 0.8;
   `,
   TaskStatus: styled.Text`
-      color: #FFFFFF;
+      color: black;
       font-size: 12px;
       opacity: 0.8;
       position: absolute;
@@ -125,7 +184,7 @@ const S = {
   MonthlyPreviewTitle: styled.Text`
       font-size: 24px;
       font-weight: bold;
-      color: #FFFFFF;
+      color: black;
       margin-bottom: 15px;
   `,
   MonthlyPreview: styled.View`

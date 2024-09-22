@@ -42,7 +42,7 @@ const S = {
     
   `,
   Text: styled.Text`
-    color: ${(p) => p.theme.white};
+    color: ${(p) => p.theme.black};
     padding: 6px 0;
     font-size: ${(p) => p.theme.size(16,'px')};
   `

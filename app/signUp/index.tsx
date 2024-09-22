@@ -40,7 +40,7 @@ const S = {
     padding-bottom: 21px;
  `,
   Text: styled.Text`
-    color: ${(p) => p.theme.white};
+    color: ${(p) => p.theme.black};
     font-size: ${(p) => p.theme.size(16, 'px')};
   `,
 }

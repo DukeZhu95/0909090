@@ -2,8 +2,6 @@ import styled from "styled-components/native"
 import { PressableProps } from "react-native"
 import { FC } from "react";
 
-
-
 interface Props  {
     pressableProps?: PressableProps
     prefix?: FC,

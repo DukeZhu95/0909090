@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/native';
 import { TextInput, TouchableOpacity, Text, Alert, ScrollView, Platform, View } from 'react-native'
-// import { useNavigation } from '@react-navigation/native';
 import ScreenLayout from 'src/components/ScreenLayout';
 import UserAvatar from 'src/assets/images/Avatar.png';
 import { Modal } from 'react-native';
@@ -18,6 +17,7 @@ interface InputProps {
   value: string;
   secureTextEntry?: boolean;
 }
+
 // 自定义 Shadow 组件
 const Shadow = styled(View)`
   ${Platform.select({
@@ -176,11 +176,11 @@ const S = {
   UserName: styled.Text`
     font-size: 20px;
     font-weight: bold;
-    color: ${(p) => p.theme.white};
+    color: ${(p) => p.theme.black};
   `,
   UserEmail: styled.Text`
     font-size: 16px;
-    color: ${(p) => p.theme.white};
+    color: ${(p) => p.theme.black};
   `,
   ProfileField: styled.View`
     margin-bottom: 20px;
@@ -188,7 +188,7 @@ const S = {
   Label: styled.Text`
     font-size: 22px;
     font-weight: bold;
-    color: ${(p) => p.theme.white};
+    color: ${(p) => p.theme.black};
     margin-bottom: 5px;
   `,
   Input: styled(TextInput)<InputProps>`
@@ -200,7 +200,7 @@ const S = {
     font-weight: ${(p) => (p.isEditable ? 'normal' : 'bold')};
   `,
   EditButton: styled(TouchableOpacity)<EditButtonProps>`
-    background-color: ${(props) => (props.isEditable ? '#6366F1' : '#FFC0CB')};
+    background-color: ${(props) => (props.isEditable ? '#6366F1' : '#2D60FF')};
     padding: 10px 20px;
     border-radius: 10px;
     justify-content: center;
@@ -212,7 +212,7 @@ const S = {
     font-size: 24px;  
   `,
   LogoutButton: styled(TouchableOpacity)`
-      background-color: #FF6B6B;
+      background-color: #0A06F4;
       padding: 18px;
       border-radius: 10px;
       justify-content: center;

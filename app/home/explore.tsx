@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import { TouchableOpacity, FlatList, ScrollView } from 'react-native';
+import { Pressable, ScrollView } from 'react-native';
 import ScreenLayout from 'src/components/ScreenLayout';
 
+// Styled components
 const Content = styled.View`
     padding: 20px;
+    background-color: #F8F9FA;
+    flex: 1;
 `;
 
 const TopSection = styled.View`
@@ -15,103 +18,149 @@ const TopSection = styled.View`
 `;
 
 const MonthText = styled.Text`
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
-    color: ${(p) => p.theme.white};
+    color: ${(p) => p.theme.black};
     text-align: center;
 `;
 
 const NavButton = styled.Text`
     font-size: 16px;
-    color: ${(p) => p.theme.white};
+    color: ${(p) => p.theme.GRAY};
 `;
 
 const DatePicker = styled.View`
+    flex-direction: row;
+    justify-content: space-between;
     margin-bottom: 20px;
 `;
 
-const DateRow = styled.View`
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 10px;
-`;
-
-const DateCard = styled.View`
-    background-color: ${(p) => p.theme.gray434343};
+const DateCard = styled.View<{ isSelected: boolean }>`
+    background-color: ${(p) => p.isSelected ? p.theme.LIGHT_BLUE : 'white'};
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 20px;
     align-items: center;
-    width: 40px;
-    height: 60px;
+    width: 50px;
+    height: 70px;
     justify-content: center;
-    margin-right: 5px;
+    //elevation: 2;
+`;
+styled(DateCard)`
+    background-color: ${(p) => p.theme.LIGHT_BLUE};
+`
+const DateText = styled.Text<{ isSelected: boolean }>`
+    color: ${(p) => p.isSelected ? 'white' : p.theme.black};
+    font-size: 24px;
+    font-weight: bold;
 `;
 
-const DateCardSelected = styled(DateCard)`
-    background-color: ${(p) => p.theme.white};
+const DayText = styled.Text<{ isSelected: boolean }>`
+    color: ${(p) => p.isSelected ? 'white' : p.theme.GRAY};
+    font-size: 14px;
 `;
 
-const DateText = styled.Text`
-    color: ${(p) => p.theme.white};
+// 时间轴
+const TimelineContainer = styled.View`
+    flex: 1;
+    height: 500px; // 增加高度
+    border: 1px solid red;
+`;
+
+const TimelineScrollView = styled.ScrollView`
+  flex: 1;
+`;
+
+const TimelineContent = styled.View`
+    flex-direction: row;
+    width: 100%;
+    min-height: 600px;
+`;
+
+const TimeColumn = styled.View`
+  width: 60px;
+`;
+
+const TaskColumn = styled.View`
+  flex: 1;
+  position: relative;
+`;
+const TimeSlot = styled.Text`
+    height: 60px;
+    text-align: right;
+    color: ${(p) => p.theme.GRAY};
+    line-height: 60px;
+    padding-right: 10px;
+`;
+const TaskItem = styled(Pressable)<{ top: number; height: number; color: string }>`
+    position: absolute;
+    left: 0;
+    right: 0;
+    background-color: ${(p) => p.color};
+    border-radius: 5px;
+    padding: 5px;
+    top: ${(p) => p.top}px;
+    height: ${(p) => p.height}px;
+    z-index: 1;
+`;
+
+const TaskTitle = styled.Text`
+    color: white;
+    font-weight: bold;
     font-size: 16px;
 `;
 
-const DayText = styled.Text`
-    color: ${(p) => p.theme.white};
+
+const TaskDetails = styled.Text`
+    color: white;
     font-size: 12px;
 `;
 
-const Schedule = styled.View`
-    margin-top: 20px;
+// Update BackgroundGrid component:
+const BackgroundGrid = () => (
+  <>
+    {Array.from({ length: 10 }, (_, i) => (
+      <GridLine key={i} style={{ top: i * 60 }} />
+    ))}
+  </>
+);
+
+const GridLine = styled.View`
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: #E5E5E5;
 `;
 
-const TaskCard = styled.View<{ color: string }>`
-    background-color: ${(p) => p.color};
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-`;
-
-const TaskText = styled.Text`
-    color: ${(p) => p.theme.white};
-    margin-bottom: 5px;
-`;
-
-const S = {
-  Content,
-  TopSection,
-  MonthText,
-  NavButton,
-  DatePicker,
-  DateRow,
-  DateCard,
-  DateCardSelected,
-  DateText,
-  DayText,
-  Schedule,
-  TaskCard,
-  TaskText,
-};
-
-// Mock task data
-const taskData = [
-  { id: '1', title: 'Bore Inspection', date: '2024-04-05', location: '77 Cow Road, Dairytown', color: '#EF4444' },
-  { id: '2', title: 'Dairy Discharge Monitoring', date: '2024-04-05', location: '592 Ohauiti Road, Ohauiti 3171', color: '#3B82F6' },
-  { id: '3', title: 'Noxious Weed Control', date: '2024-04-05', location: '', color: '#EF4444' },
-];
-
+// Interfaces
 interface Task {
   id: string;
   title: string;
   date: string;
+  startTime: string;
+  endTime: string;
   location?: string;
   color: string;
 }
 
+// Mock data
+const taskData: Task[] = [
+  { id: '1', title: 'Bore Inspection', date: '2024-09-22', startTime: '09:00', endTime: '10:00', location: '77 Cow Road, Dairytown', color: '#4C49ED' },
+  { id: '2', title: 'Dairy Discharge Monitoring', date: '2024-09-22', startTime: '11:00', endTime: '12:00', location: '592 Ohauiti Road, Ohauiti 3171', color: '#2D60FF' },
+  { id: '3', title: 'Noxious Weed Control', date: '2024-09-22', startTime: '14:00', endTime: '15:00', location: '', color: '#0A06F4' },
+];
+
 export default function ExploreScreen() {
-  const [currentMonth, setCurrentMonth] = useState(new Date(2024, 8, 1)); // September 2024
-  const [selectedDate, setSelectedDate] = useState(new Date(2024, 8, 1)); // First day of September 2024
+  const [currentMonth, setCurrentMonth] = useState(new Date(2024, 8, 22)); // September 2024
+  const [selectedDate, setSelectedDate] = useState(new Date(2024, 8, 22)); // September 22, 2024
   const [tasks] = useState<Task[]>(taskData);
+
+  // 在主组件中
+  useEffect(() => {
+    console.log('Component mounted or updated');
+    console.log('Current tasks:', tasks);
+    console.log('Selected date:', selectedDate.toDateString());
+  }, [tasks, selectedDate]);
 
   const handleMonthChange = (direction: 'prev' | 'next') => {
     setCurrentMonth(prevMonth => {
@@ -140,67 +189,111 @@ export default function ExploreScreen() {
   };
 
   useEffect(() => {
-    // Update selected date when month changes
     setSelectedDate(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1));
   }, [currentMonth]);
+
+  // Update renderTimeSlots function:
+  const renderTimeSlots = () => (
+    <>
+      {Array.from({ length: 10 }, (_, i) => (
+        <TimeSlot key={i + 8}>{`${i + 8}:00`}</TimeSlot>
+      ))}
+    </>
+  );
+
+  const getMinutes = (time: string) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    return hours * 60 + minutes;
+  };
+
+  // 在 renderTasks 函数中添加日期过滤
+  const renderTasks = () => {
+    const startHour = 8;
+    const hourHeight = 60;
+
+    const filteredTasks = tasks.filter(task => {
+      const taskDate = new Date(task.date);
+      const selectedDateStr = selectedDate.toISOString().split('T')[0];
+      const taskDateStr = taskDate.toISOString().split('T')[0];
+      return taskDateStr === selectedDateStr;
+    });
+
+    return filteredTasks.map(task => {
+      const startMinutes = getMinutes(task.startTime) - startHour * 60;
+      const endMinutes = getMinutes(task.endTime) - startHour * 60;
+
+      const top = Math.floor(startMinutes / 60) * hourHeight;
+      const height = Math.ceil((endMinutes - startMinutes) / 60) * hourHeight;
+
+      return (
+        <TaskItem
+          key={task.id}
+          top={top}
+          height={height}
+          color={task.color}
+          onPress={() => handleTaskPress(task.id)}
+        >
+          <TaskTitle>{task.title}</TaskTitle>
+          <TaskDetails>{`${task.startTime} - ${task.endTime}`}</TaskDetails>
+          {task.location && <TaskDetails>{task.location}</TaskDetails>}
+        </TaskItem>
+      );
+    });
+  };
 
   const handleTaskPress = (taskId: string) => {
     console.log(`Task ${taskId} pressed`);
     // Add navigation logic to task detail page here
   };
 
-  const renderTaskItem = ({ item }: { item: Task }) => (
-    <TouchableOpacity onPress={() => handleTaskPress(item.id)}>
-      <S.TaskCard color={item.color}>
-        <S.TaskText>{item.title}</S.TaskText>
-        <S.TaskText>{item.date}</S.TaskText>
-        {item.location && <S.TaskText>{item.location}</S.TaskText>}
-      </S.TaskCard>
-    </TouchableOpacity>
-  );
-
   const renderDateCard = (date: Date) => {
     const isSelected = date.toDateString() === selectedDate.toDateString();
-    const CardComponent = isSelected ? S.DateCardSelected : S.DateCard;
     return (
-      <TouchableOpacity key={date.toISOString()} onPress={() => setSelectedDate(date)}>
-        <CardComponent>
-          <S.DateText style={isSelected ? {color: 'black'} : {}}>{date.getDate()}</S.DateText>
-          <S.DayText style={isSelected ? {color: 'black'} : {}}>{date.toLocaleString('en-US', { weekday: 'short' })}</S.DayText>
-        </CardComponent>
-      </TouchableOpacity>
+      <Pressable key={date.toISOString()} onPress={() => setSelectedDate(date)}>
+        <DateCard isSelected={isSelected}>
+          <DayText isSelected={isSelected}>{date.toLocaleString('en-US', { weekday: 'short' })}</DayText>
+          <DateText isSelected={isSelected}>{date.getDate()}</DateText>
+        </DateCard>
+      </Pressable>
     );
   };
 
+  console.log('Selected date:', selectedDate.toDateString()); // 调试信息
+
   return (
     <ScreenLayout testID="explore-screen-layout">
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <S.Content testID="explore-screen-content">
-          <S.TopSection>
-            <TouchableOpacity onPress={() => handleMonthChange('prev')}>
-              <S.NavButton>{'< '}{new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1).toLocaleString('en-US', { month: 'short' })}</S.NavButton>
-            </TouchableOpacity>
-            <S.MonthText>{currentMonth.toLocaleString('en-US', { year: 'numeric', month: 'long' })}</S.MonthText>
-            <TouchableOpacity onPress={() => handleMonthChange('next')}>
-              <S.NavButton>{new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1).toLocaleString('en-US', { month: 'short' })}{' >'}</S.NavButton>
-            </TouchableOpacity>
-          </S.TopSection>
+      <Content testID="explore-screen-content">
+        <TopSection>
+          <Pressable onPress={() => handleMonthChange('prev')}>
+            <NavButton>{'< '}{new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1).toLocaleString('en-US', { month: 'short' })}</NavButton>
+          </Pressable>
+          <MonthText>{currentMonth.toLocaleString('en-US', { month: 'long' })}</MonthText>
+          <Pressable onPress={() => handleMonthChange('next')}>
+            <NavButton>{new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1).toLocaleString('en-US', { month: 'short' })}{' >'}</NavButton>
+          </Pressable>
+        </TopSection>
 
-          <S.DatePicker>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {getMonthDates().map(renderDateCard)}
-            </ScrollView>
-          </S.DatePicker>
+        <DatePicker>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {getMonthDates().map(renderDateCard)}
+          </ScrollView>
+        </DatePicker>
 
-          <S.Schedule>
-            <FlatList
-              data={tasks}
-              renderItem={renderTaskItem}
-              keyExtractor={item => item.id}
-            />
-          </S.Schedule>
-        </S.Content>
-      </ScrollView>
+        <TimelineContainer>
+          <TimelineScrollView>
+            <TimelineContent>
+              <TimeColumn>
+                {renderTimeSlots()}
+              </TimeColumn>
+              <TaskColumn>
+                <BackgroundGrid />
+                {renderTasks()}
+              </TaskColumn>
+            </TimelineContent>
+          </TimelineScrollView>
+        </TimelineContainer>
+      </Content>
     </ScreenLayout>
   );
 }
+

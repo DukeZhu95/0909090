@@ -2,10 +2,10 @@ import { dimensions, height, width } from 'src/utils/dimensions'
 
 /**
  * Theme For Styled Components
- * -
+ *
  */
 export const appTheme = {
-  background: '#191919',
+  background: '#ededfc',
   orange: '#E4FF1A',
   white: '#FFFFFF',
   grayAAAAAA: '#AAAAAA',
@@ -15,6 +15,13 @@ export const appTheme = {
   primary: '#FFF',
   secondary: '#CCC',
   highlight: '#FF2353',
+  // Add your own colors here
+  BLUE: '#2D60FF',
+  GRAY: '#B9B9B9',
+  PURPLE: '#4C49ED',
+  DEEP_BLUE: '#0A06F4',
+  LIGHT_BLUE: '#8dbff5',
+
   size: dimensions,
   windowHeight: `${height}px`,
   windowWidth: `${width}px`
@@ -22,7 +29,7 @@ export const appTheme = {
 
 /**
  * Theme For Expo Navigation Header
- * -
+ *
  */
 export const navTheme = {
   dark: false,

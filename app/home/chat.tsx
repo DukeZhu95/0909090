@@ -241,7 +241,7 @@ const S = {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    background-color: #FF69B4;
+    background-color: #4C49ED;
     padding: 15px;
     border-radius: 10px;
   `,
@@ -314,7 +314,7 @@ const S = {
   `,
   Section: styled.View`
       margin-bottom: 20px;
-      background-color: #FFC0CB;
+      background-color: #8dbff5;
       padding: 20px;
       border-radius: 10px;
   `,
@@ -325,7 +325,7 @@ const S = {
       margin-top: 5px;
       margin-bottom: 10px;
       padding-left: 10px;
-      color: beige;
+      color: black;
   `,
   SectionTitle: styled.Text`
       font-size: 18px;
