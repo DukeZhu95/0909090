@@ -68,7 +68,7 @@ export default function HomeScreen() {
                 <S.Avatar source={UserAvatar} />
               </TouchableOpacity>
               <S.GreetingText>Hi Duke.</S.GreetingText>
-              <S.TaskText>5 Tasks are pending</S.TaskText>
+              {/*<S.TaskText>5 Tasks are pending</S.TaskText>*/}
             </S.UserSection>
           </S.TopSection>
 
