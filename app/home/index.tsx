@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import ScreenLayout from 'src/components/ScreenLayout';
 import UserAvatar from 'src/assets/images/Avatar.png'
-import WeatherModule from './weatherModule'; // 假设我们在同一目录创建了这个组件
+import WeatherModule from 'src/components/weatherModule';
 
 // 定义应用的路由参数
 type RootStackParamList = {
