@@ -13,7 +13,6 @@ import UserAvatar from 'src/assets/images/Avatar.png';
 //   chat: undefined;
 //   explore: undefined;
 //   // 添加其他路由...
-// };
 
 // 定义导航属性的类型
 // type ChatScreenNavigationProp = StackNavigationProp<RootStackParamList, 'chat'>;
@@ -235,25 +234,26 @@ export default function ChatScreen() {
 const S = {
   Content: styled.View`
     padding: 20px;
+    background-color: #CCD9FC;
   `,
   TaskInfo: styled.View`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    background-color: #4C49ED;
+    background-color: #00167F;
     padding: 15px;
     border-radius: 10px;
   `,
-  BackButton: styled.TouchableOpacity`
-    width: 40px;
-    height: 40px;
-    background-color: ${(p) => p.theme.white};
-    border-radius: 20px;
-    justify-content: center;
-    align-items: center;
-    margin-right: 10px;
-  `,
+  // BackButton: styled.TouchableOpacity`
+  //   width: 40px;
+  //   height: 40px;
+  //   background-color: ${(p) => p.theme.white};
+  //   border-radius: 20px;
+  //   justify-content: center;
+  //   align-items: center;
+  //   margin-right: 10px;
+  // `,
   TaskDetails: styled.View`
     flex: 1;
   `,
@@ -305,7 +305,7 @@ const S = {
   ActionButton: styled.TouchableOpacity`
     flex: 1;
     height: 50px;
-    background-color: #6366F1;
+    background-color: #0022CB;
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -314,7 +314,7 @@ const S = {
   `,
   Section: styled.View`
       margin-bottom: 20px;
-      background-color: #8dbff5;
+      background-color: #80A0FB;
       padding: 20px;
       border-radius: 10px;
   `,
@@ -382,7 +382,7 @@ const S = {
   PauseButton: styled.TouchableOpacity`
     flex: 1;
     height: 50px;
-    background-color: #FFC0CB;
+    background-color: #0022CB;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
@@ -391,7 +391,7 @@ const S = {
   FinishButton: styled.TouchableOpacity`
     flex: 1;
     height: 50px;
-    background-color: #FF69B4;
+    background-color: #0022CB;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
@@ -408,7 +408,7 @@ const S = {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    background-color: #6366F1;
+    background-color: #0022CB;
     padding: 10px 20px;
     border-radius: 25px;
     width: 48%;

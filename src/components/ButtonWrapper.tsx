@@ -20,7 +20,7 @@ export default function ButtonWrapper(props: Props) {
   
 const S = {
     Button: styled.TouchableOpacity`
-      background: ${(p) => p.theme.LIGHT_BLUE};
+      background: ${(p) => p.theme.DATASCAPE_MINUS1};
       height:  ${(p) => p.theme.size(58, 'px')};
       display: flex;
       align-items: center;

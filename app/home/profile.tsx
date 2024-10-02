@@ -157,6 +157,7 @@ export default function ProfileScreen() {
 const S = {
   Content: styled.View`
     padding: 20px;
+    background-color: #CCD9FC  
   `,
   ProfileHeader: styled.View`
     flex-direction: row;
@@ -200,7 +201,7 @@ const S = {
     font-weight: ${(p) => (p.isEditable ? 'normal' : 'bold')};
   `,
   EditButton: styled(TouchableOpacity)<EditButtonProps>`
-    background-color: ${(props) => (props.isEditable ? '#6366F1' : '#2D60FF')};
+    background-color: ${(props) => (props.isEditable ? '#9352FF' : '#0022CB')};
     padding: 10px 20px;
     border-radius: 10px;
     justify-content: center;
@@ -212,7 +213,7 @@ const S = {
     font-size: 24px;  
   `,
   LogoutButton: styled(TouchableOpacity)`
-      background-color: #0A06F4;
+      background-color: #000933;
       padding: 18px;
       border-radius: 10px;
       justify-content: center;

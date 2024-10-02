@@ -74,19 +74,19 @@ export default function HomeScreen() {
 
           <S.MonthlyPreviewTitle>Monthly Preview</S.MonthlyPreviewTitle>
           <S.MonthlyPreview>
-            <S.TaskCard1 color="#4C49ED">
+            <S.TaskCard1 color="#00167F">
               <S.TaskCardNumber>22</S.TaskCardNumber>
               <S.TaskCardText>Done</S.TaskCardText>
             </S.TaskCard1>
-            <S.TaskCard2 color="#2D60FF">
+            <S.TaskCard2 color="#0022CB">
               <S.TaskCardNumber>7</S.TaskCardNumber>
               <S.TaskCardText>In Progress</S.TaskCardText>
             </S.TaskCard2>
-            <S.TaskCard3 color="#0A06F4">
+            <S.TaskCard3 color="#80A0FB">
               <S.TaskCardNumber>12</S.TaskCardNumber>
               <S.TaskCardText>Pending</S.TaskCardText>
             </S.TaskCard3>
-            <S.TaskCard4 color="#60a5fa">
+            <S.TaskCard4 color="#3366F3">
               <S.TaskCardNumber>14</S.TaskCardNumber>
               <S.TaskCardText>Waiting For Review</S.TaskCardText>
             </S.TaskCard4>
@@ -99,7 +99,7 @@ export default function HomeScreen() {
 
 const S = {
   CalendarContainer: styled.View`
-    background-color: #f0f0f0;
+    background-color: #80A0FB;
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 15px;
@@ -116,7 +116,7 @@ const S = {
   DateNumber: styled.Text`
     font-size: 40px;
     font-weight: bold;
-    color: #000;
+    color: #000933;
     margin-right: 10px;
   `,
   MonthYearContainer: styled.View`
@@ -124,15 +124,15 @@ const S = {
   `,
   MonthText: styled.Text`
     font-size: 18px;
-    color: #333;
+    color: #000933;
   `,
   YearText: styled.Text`
     font-size: 14px;
-    color: #666;
+    color: #000933;
   `,
   Content: styled.View`
       padding: 20px;
-      background-color: #fffefe;
+      background-color: #CCD9FC;
   `,
   TopSection: styled.View`
       flex-direction: row;

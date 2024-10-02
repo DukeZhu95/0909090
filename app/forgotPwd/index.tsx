@@ -21,7 +21,7 @@ export default function ForgetPwdScreen() {
       });
       console.log("handleSubmit====res:",response);
       console.log('Password reset link sent to your email.');
-      // router.push('/login'); // Navigate to login screen or wherever appropriate
+      // router.push('/login'); // Navigate to log in screen or wherever appropriate
     } catch (error) {
       console.error(error);
     }
@@ -58,7 +58,7 @@ const S = {
       padding: 0 ${(p) => p.theme.size(45, 'px')};
   `,
   Title: styled.Text`
-      color: ${(p) => p.theme.black};
+      color: ${(p) => p.theme.DATASCAPE_PLUS1};
       font-family: helvetica;
       font-weight: 900;
       font-size: ${(p) => p.theme.size(36, 'px')};

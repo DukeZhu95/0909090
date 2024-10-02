@@ -35,8 +35,8 @@ export default function TextInputWrapper(props: Props) {
 const S = {
     TextInput: styled.TextInput`
       border-width: 1px;
-      color: ${(p) => p.theme.grayAAAAAA};
-      background: ${(p) => p.theme.gray434343};
+      color: ${(p) => p.theme.gray434343};
+      background: ${(p) => p.theme.white};
       height: ${(p) => p.theme.size(58, 'px')};
       border-radius: 8px;
       padding: 0 ${(p) => p.theme.size(12, 'px')};

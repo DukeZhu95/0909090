@@ -19,13 +19,14 @@ const CityContainer = styled.View`
 const CityText = styled.Text`
     font-size: 18px;
     font-weight: bold;
-    color: #333;
+    color: #000933;
     margin-left: 5px;
 `;
 
 const WeatherText = styled.Text`
   font-size: 16px;
-  color: #333;
+  font-weight: bold;  
+  color: #000933;
 `;
 
 const TemperatureText = styled.Text`

@@ -17,7 +17,7 @@ type NavigationProp = StackNavigationProp<RootStackParamList>;
 // Styled components
 const Content = styled.View`
     padding: 20px;
-    background-color: #F8F9FA;
+    background-color: #CCD9FC;
     flex: 1;
 `;
 
@@ -37,7 +37,8 @@ const MonthText = styled.Text`
 
 const NavButton = styled.Text`
     font-size: 16px;
-    color: ${(p) => p.theme.GRAY};
+    font-weight: bold;
+    color: ${(p) => p.theme.ELECTRIC_BLUE_PLUS3};
 `;
 
 const DatePicker = styled.View`
@@ -47,14 +48,14 @@ const DatePicker = styled.View`
 `;
 
 const DateCard = styled.View<{ isSelected: boolean }>`
-    background-color: ${(p) => p.isSelected ? p.theme.LIGHT_BLUE : 'white'};
+    background-color: ${(p) => p.isSelected ? p.theme.ELECTRIC_BLUE_PLUS2 : 'white'};
     padding: 10px;
     border-radius: 20px;
     align-items: center;
     width: 50px;
     height: 70px;
     justify-content: center;
-    //elevation: 2;
+    // elevation: 2;
 `;
 styled(DateCard)`
     background-color: ${(p) => p.theme.LIGHT_BLUE};
@@ -140,7 +141,7 @@ const GridLine = styled.View`
   left: 0;
   right: 0;
   height: 1px;
-  background-color: #E5E5E5;
+  background-color: #80A0FB;
 `;
 
 // Interfaces
@@ -156,9 +157,9 @@ interface Task {
 
 // Mock data
 const taskData: Task[] = [
-  { id: '1', title: 'Bore Inspection', date: '2024-09-22', startTime: '09:00', endTime: '10:00', location: '77 Cow Road, Dairytown', color: '#4C49ED' },
-  { id: '2', title: 'Dairy Discharge Monitoring', date: '2024-09-22', startTime: '11:00', endTime: '12:00', location: '592 Ohauiti Road, Ohauiti 3171', color: '#2D60FF' },
-  { id: '3', title: 'Noxious Weed Control', date: '2024-09-22', startTime: '14:00', endTime: '15:00', location: '', color: '#0A06F4' },
+  { id: '1', title: 'Bore Inspection', date: '2024-09-22', startTime: '09:00', endTime: '10:00', location: '77 Cow Road, Dairytown', color: '#0022CB' },
+  { id: '2', title: 'Dairy Discharge Monitoring', date: '2024-09-22', startTime: '11:00', endTime: '12:00', location: '592 Ohauiti Road, Ohauiti 3171', color: '#0022CB' },
+  { id: '3', title: 'Noxious Weed Control', date: '2024-09-22', startTime: '14:00', endTime: '15:00', location: '', color: '#0022CB' },
 ];
 
 export default function ExploreScreen() {
