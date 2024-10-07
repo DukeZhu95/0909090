@@ -4,7 +4,7 @@ import { View, Text, ActivityIndicator } from 'react-native';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 
 const WeatherContainer = styled.View`
-    background-color: #e6f2ff;
+    background-color: #ffffff;
     padding: 15px;
     border-radius: 10px;
     margin-top: 15px;
@@ -32,7 +32,7 @@ const WeatherText = styled.Text`
 const TemperatureText = styled.Text`
   font-size: 24px;
   font-weight: bold;
-  color: #0066cc;
+  color: #3C1480;
 `;
 
 const WeatherInfoContainer = styled.View`

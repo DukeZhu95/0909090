@@ -11,15 +11,15 @@ import  ProfileOrangeSvg from 'src/assets/icons/profile-orange.svg'
 import { useTheme } from "styled-components/native";
 
 export default function HomeLayout() {
-   const {orange, ELECTRIC_BLUE_MINUS2,black} = useTheme()
+   const {orange, DATASCAPE_MINUS2,black} = useTheme()
     return (
       <Tabs 
       screenOptions={{
         tabBarActiveTintColor: orange,
         tabBarInactiveTintColor: black,
         tabBarStyle: {
-            borderTopColor: ELECTRIC_BLUE_MINUS2,
-            backgroundColor: ELECTRIC_BLUE_MINUS2,
+            borderTopColor: DATASCAPE_MINUS2,
+            backgroundColor: DATASCAPE_MINUS2,
         }
       }}>
         <Tabs.Screen

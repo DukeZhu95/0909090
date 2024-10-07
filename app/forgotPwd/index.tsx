@@ -4,6 +4,7 @@ import TextInputWrapper from 'src/components/TextInputWrapper'
 import ButtonWrapper from 'src/components/ButtonWrapper'
 import StackScreenHeader from 'src/components/StackScreenHeader'
 import { useState } from 'react'
+import axios from 'axios'
 const baseUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export default function ForgetPwdScreen() {
@@ -12,18 +13,26 @@ export default function ForgetPwdScreen() {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(`${baseUrl}/api/User/forgotPwd`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password }),
-      });
-      console.log("handleSubmit====res:",response);
+      const response = await axios.post(`${baseUrl}/api/User/forgotPwd`,
+        { email, password },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      console.log("handleSubmit====res:", response.data);
       console.log('Password reset link sent to your email.');
       // router.push('/login'); // Navigate to log in screen or wherever appropriate
     } catch (error) {
-      console.error(error);
+      if (axios.isAxiosError(error)) {
+        // 处理Axios特定的错误
+        console.error('Axios error:', error.response?.data || error.message);
+      } else {
+        // 处理其他类型的错误
+        console.error('An unexpected error occurred:', error);
+      }
     }
   };
 

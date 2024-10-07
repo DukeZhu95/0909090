@@ -157,7 +157,7 @@ export default function ProfileScreen() {
 const S = {
   Content: styled.View`
     padding: 20px;
-    background-color: #CCD9FC  
+    background-color: #E4D4FF  
   `,
   ProfileHeader: styled.View`
     flex-direction: row;
@@ -213,7 +213,7 @@ const S = {
     font-size: 24px;  
   `,
   LogoutButton: styled(TouchableOpacity)`
-      background-color: #000933;
+      background-color: #180833;
       padding: 18px;
       border-radius: 10px;
       justify-content: center;

@@ -1,28 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import { Text, ScrollView } from 'react-native';
-// import { useNavigation } from '@react-navigation/native';
+import { View, Text, ScrollView } from 'react-native';
+import { getInspectionChecklist, ChecklistItem } from '..src/api';
 import ScreenLayout from 'src/components/ScreenLayout';
 import { Svg, Path, Rect } from 'react-native-svg';
 // 引入用户头像图片
 import UserAvatar from 'src/assets/images/Avatar.png';
-// import { StackNavigationProp } from '@react-navigation/stack'
-
-// 定义应用的路由参数
-// type RootStackParamList = {
-//   chat: undefined;
-//   explore: undefined;
-//   // 添加其他路由...
-
-// 定义导航属性的类型
-// type ChatScreenNavigationProp = StackNavigationProp<RootStackParamList, 'chat'>;
-
-// SVG 图标组件
-// const BackIcon = () => (
-//   <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-//     <Path d="M19 12H5M12 19L5 12L12 5" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-//   </Svg>
-// );
 
 const LocationIcon = () => (
   <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -234,14 +217,14 @@ export default function ChatScreen() {
 const S = {
   Content: styled.View`
     padding: 20px;
-    background-color: #CCD9FC;
+    background-color: #E4D4FF;
   `,
   TaskInfo: styled.View`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    background-color: #00167F;
+    background-color: #3C1480;
     padding: 15px;
     border-radius: 10px;
   `,
@@ -305,7 +288,7 @@ const S = {
   ActionButton: styled.TouchableOpacity`
     flex: 1;
     height: 50px;
-    background-color: #0022CB;
+    background-color: #601FCC;
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -314,7 +297,7 @@ const S = {
   `,
   Section: styled.View`
       margin-bottom: 20px;
-      background-color: #80A0FB;
+      background-color: #BC93FF;
       padding: 20px;
       border-radius: 10px;
   `,
@@ -382,7 +365,6 @@ const S = {
   PauseButton: styled.TouchableOpacity`
     flex: 1;
     height: 50px;
-    background-color: #0022CB;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
@@ -391,7 +373,6 @@ const S = {
   FinishButton: styled.TouchableOpacity`
     flex: 1;
     height: 50px;
-    background-color: #0022CB;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
@@ -408,7 +389,7 @@ const S = {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    background-color: #0022CB;
+    background-color: #3C1480;
     padding: 10px 20px;
     border-radius: 25px;
     width: 48%;

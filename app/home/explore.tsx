@@ -17,7 +17,7 @@ type NavigationProp = StackNavigationProp<RootStackParamList>;
 // Styled components
 const Content = styled.View`
     padding: 20px;
-    background-color: #CCD9FC;
+    background-color: #E4D4FF;
     flex: 1;
 `;
 
@@ -48,7 +48,7 @@ const DatePicker = styled.View`
 `;
 
 const DateCard = styled.View<{ isSelected: boolean }>`
-    background-color: ${(p) => p.isSelected ? p.theme.ELECTRIC_BLUE_PLUS2 : 'white'};
+    background-color: ${(p) => p.isSelected ? p.theme.DATASCAPE_PLUS2 : 'white'};
     padding: 10px;
     border-radius: 20px;
     align-items: center;
@@ -58,7 +58,7 @@ const DateCard = styled.View<{ isSelected: boolean }>`
     // elevation: 2;
 `;
 styled(DateCard)`
-    background-color: ${(p) => p.theme.LIGHT_BLUE};
+    background-color: ${(p) => p.theme.DATASCAPE_MINUS3};
 `
 const DateText = styled.Text<{ isSelected: boolean }>`
     color: ${(p) => p.isSelected ? 'white' : p.theme.black};
@@ -141,7 +141,7 @@ const GridLine = styled.View`
   left: 0;
   right: 0;
   height: 1px;
-  background-color: #80A0FB;
+  background-color: #BC93FF;
 `;
 
 // Interfaces
@@ -157,9 +157,9 @@ interface Task {
 
 // Mock data
 const taskData: Task[] = [
-  { id: '1', title: 'Bore Inspection', date: '2024-09-22', startTime: '09:00', endTime: '10:00', location: '77 Cow Road, Dairytown', color: '#0022CB' },
-  { id: '2', title: 'Dairy Discharge Monitoring', date: '2024-09-22', startTime: '11:00', endTime: '12:00', location: '592 Ohauiti Road, Ohauiti 3171', color: '#0022CB' },
-  { id: '3', title: 'Noxious Weed Control', date: '2024-09-22', startTime: '14:00', endTime: '15:00', location: '', color: '#0022CB' },
+  { id: '1', title: 'Bore Inspection', date: '2024-09-22', startTime: '09:00', endTime: '10:00', location: '77 Cow Road, Dairytown', color: '#9352FF' },
+  { id: '2', title: 'Dairy Discharge Monitoring', date: '2024-09-22', startTime: '11:00', endTime: '12:00', location: '592 Ohauiti Road, Ohauiti 3171', color: '#9352FF' },
+  { id: '3', title: 'Noxious Weed Control', date: '2024-09-22', startTime: '14:00', endTime: '15:00', location: '', color: '#9352FF' },
 ];
 
 export default function ExploreScreen() {
