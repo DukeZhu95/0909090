@@ -1,23 +1,31 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { toastShow } from './toast';
 
-axios.defaults.withCredentials = false;
+const baseURL = process.env.EXPO_PUBLIC_API_URL;
+axios.defaults.baseURL = baseURL;
+
+axios.defaults.withCredentials = true;
+
+// 定义 CustomConfig 接口
+interface CustomConfig extends AxiosRequestConfig {
+  showErrorMsg?: boolean;
+}
 
 // request interceptor
+const getUserToken = () => {
+  // 实现从安全存储获取用户令牌的逻辑
+  return 'your_dynamic_token_here';
+};
+
 axios.interceptors.request.use(
   (config) => {
-    const userToken = 'xxxxxxxxxxx'
-
-    // do something before request is sent
+    const userToken = getUserToken();
     if (userToken) {
-      // let each request carry token
       config.headers.Authorization = `Bearer ${userToken}`;
     }
-
     return config;
   },
   (error) => {
-    // do something with request error
     console.log(error); // for debug
     return Promise.reject(error);
   }
@@ -25,38 +33,26 @@ axios.interceptors.request.use(
 
 // response interceptor
 axios.interceptors.response.use(
-  /**
-   * If you want to get http information such as headers or status
-   * Please return  response => response
-   */
-
-  /**
-   * Determine the request status by custom code
-   * Here is just an example
-   * You can also judge the status by HTTP Status Code
-   */
-  async (response) => {
+  (response) => {
     const { config, data } = response;
+    const customConfig = config as CustomConfig;
+    const showErrorMsg = customConfig.showErrorMsg !== false; // 默认为 true
 
-    // @ts-ignore
-    const { showErrorMsg = true } = config || {};
-    // if the custom code is not 200, it is judged as an error.
     if (data.code !== 200) {
-        if(showErrorMsg){
-            toastShow(data.msg)
-        }
-       
-        return Promise.reject({code: data.code,msg: data.msg || 'Error'})
-     } else {
-       return data
-     }
-
+      console.error('API Error:', data);
+      if (showErrorMsg) {
+        toastShow(data.msg || 'An error occurred');
+      }
+      return Promise.reject({code: data.code, msg: data.msg || 'Error'});
+    } else {
+      return data;
+    }
   },
   (error) => {
-    console.error('err' + error);
-    toastShow(error.message)
-    return Promise.reject({ code: 1000, msg: error.message });
+    console.error('Axios Error:', error.response?.data || error.message);
+    toastShow(error.response?.data?.msg || error.message || 'An error occurred');
+    return Promise.reject({ code: error.response?.status || 1000, msg: error.response?.data?.msg || error.message });
   }
 );
 
-export default axios
+export default axios;

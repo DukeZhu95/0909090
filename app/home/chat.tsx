@@ -1,11 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import { View, Text, ScrollView } from 'react-native';
-import { getInspectionChecklist, ChecklistItem } from '..src/api';
+import { ScrollView } from 'react-native';
+//import { getInspectionChecklist, Task } from 'src/api';
 import ScreenLayout from 'src/components/ScreenLayout';
 import { Svg, Path, Rect } from 'react-native-svg';
+const baseUrl = process.env.EXPO_PUBLIC_API_URL
 // 引入用户头像图片
 import UserAvatar from 'src/assets/images/Avatar.png';
+import axios from 'axios'
+import { Task } from 'src/api'
+
+export const updateInspectionChecklistItem = async (inspectionId: number, itemId: number, isChecked: boolean) => {
+  try {
+    const response = await axios.put(`/api/Inspection/updateChecklistItem`, {
+      inspectionId,
+      itemId,
+      isChecked
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating checklist item:', error);
+    throw error;
+  }
+};
 
 const LocationIcon = () => (
   <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -39,15 +56,15 @@ const VideoIcon = () => (
 );
 
 // 暂停图标
-const PauseIcon = () => (
-  <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <Rect x="6" y="4" width="4" height="16" fill="white"/>
-    <Rect x="14" y="4" width="4" height="16" fill="white"/>
-  </Svg>
-);
+// const PauseIcon = () => (
+//   <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+//     <Rect x="6" y="4" width="4" height="16" fill="white"/>
+//     <Rect x="14" y="4" width="4" height="16" fill="white"/>
+//   </Svg>
+// );
 
 // 完成图标
-const FinishIcon = () => (
+const SendIcon = () => (
   <Svg width="24" height="24" viewBox="0 0 24 24" fill="white">
     <Rect x="3" y="3" width="18" height="18" rx="2" stroke="white" strokeWidth="2"/>
   </Svg>
@@ -56,23 +73,102 @@ const FinishIcon = () => (
 // 底部栏组件
 const BottomBar = () => (
   <S.BottomBar>
+    {/*<S.Button>*/}
+    {/*  <PauseIcon />*/}
+    {/*  <S.ButtonText>PAUSE</S.ButtonText>*/}
+    {/*</S.Button>*/}
     <S.Button>
-      <PauseIcon />
-      <S.ButtonText>PAUSE</S.ButtonText>
-    </S.Button>
-    <S.Button>
-      <FinishIcon />
-      <S.ButtonText>FINISH</S.ButtonText>
+      <SendIcon/>
+      <S.ButtonText>Send</S.ButtonText>
     </S.Button>
   </S.BottomBar>
 );
 
 export default function ChatScreen() {
-  // const navigation = useNavigation<ChatScreenNavigationProp>();
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // const handleBackPress = () => {
-  //   navigation.navigate('explore');  // 确保 'explore' 匹配您的路由名称
-  // };
+  useEffect(() => {
+    fetchChecklist().then(r => console.log(r));
+  }, []);
+
+  const fetchChecklist = async () => {
+    try {
+      const inspectionId = 1;
+      setLoading(true);
+      const data = await axios.get(`${baseUrl}/api/Inspection/getInspectionCheckList`, {
+        params: { inspectionId },
+        headers: { 'Accept': 'application/json' }
+      });
+
+
+      console.log('Fetched data:', data);
+      setTasks(data.data);
+
+      console.log('Fetched data:', this.tasks);
+
+
+    } catch (error) {
+      console.error('Failed to fetch checklist:', error);
+      setTasks([]); // 确保在错误时设置空数组
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const toggleItem = async (taskId: number, itemId: number) => {
+    setTasks(prevTasks =>
+      prevTasks.map(task =>
+        task.taskId === taskId
+          ? {
+            ...task,
+            taskItemList: task.taskItemList.map(item =>
+              item.checkItemId === itemId
+                ? { ...item, isChecked: !item.isChecked }
+                : item
+            )
+          }
+          : task
+      )
+    );
+
+    // 添加API调用来更新后端状态
+    try {
+      const updatedItem = tasks
+        .find(task => task.taskId === taskId)
+        ?.taskItemList.find(item => item.checkItemId === itemId);
+
+      if (updatedItem) {
+        await updateInspectionChecklistItem(1, itemId, !updatedItem.isChecked);
+      }
+    } catch (error) {
+      console.error('Failed to update item on server:', error);
+      // 可以在这里添加错误处理逻辑，比如显示一个错误消息
+    }
+  };
+
+  // 渲染任务和检查项
+  const renderTasks = () => (
+    <>
+      {tasks.map(task => (
+        <S.Section key={task.taskId}>
+          <S.SectionTitle>{task.taskName}</S.SectionTitle>
+          {Array.isArray(task.taskItemList) && task.taskItemList.map(item => (
+            <S.CheckItem key={item.checkItemId}>
+              <S.CheckBox
+                checked={item.isChecked}
+                onPress={() => toggleItem(task.taskId, item.checkItemId)}
+              />
+              <S.CheckItemText>{item.itemName}</S.CheckItemText>
+            </S.CheckItem>
+          ))}
+        </S.Section>
+      ))}
+    </>
+  );
+
+  console.log('Current tasks:', tasks);
+  console.log('Loading state:', loading);
 
   return (
     <ScreenLayout testID="chat-screen-layout">
@@ -110,101 +206,17 @@ export default function ChatScreen() {
           </S.ButtonRow>
 
           {/* 检查列表 */}
-          <S.CheckBoxTitle>ITEMS TO BE CHECKED</S.CheckBoxTitle>
-          <S.Section>
-            <S.CheckItem>
-              <S.CheckBox />
-              <S.CheckItemText>Approved BC documents and amendments on site</S.CheckItemText>
-            </S.CheckItem>
-            <S.CheckItem>
-              <S.CheckBox />
-              <S.CheckItemText>Correct address and Lot No.</S.CheckItemText>
-            </S.CheckItem>
-            <S.CheckItem>
-              <S.CheckBox />
-              <S.CheckItemText>Consent conditions checked</S.CheckItemText>
-            </S.CheckItem>
-          </S.Section>
+          {loading ? (
+            <S.LoadingText>Loading checklist...</S.LoadingText>
+          ) : tasks.length > 0 ? (
+            <>
+              <S.CheckBoxTitle>ITEMS TO BE CHECKED</S.CheckBoxTitle>
+              {renderTasks()}
+            </>
+          ) : (
+            <S.LoadingText>No tasks available.</S.LoadingText>
+          )}
 
-          <S.Section>
-            <S.SectionTitle>Siting</S.SectionTitle>
-            <S.CheckItem>
-              <S.CheckBox />
-              <Text>Siting as per approved plans, pegs checked</Text>
-            </S.CheckItem>
-
-            <S.CheckItem>
-              <S.CheckBox />
-              <Text>
-                Retaining walls: Nova flow, PS if surcharge or {'>'}1.5m HtBuilding height to boundary
-                Surveyors report
-              </Text>
-            </S.CheckItem>
-
-            {/* 单选按钮部分 */}
-            <S.RadioGroup>
-              <S.RadioItem>
-                <S.RadioCircle />
-                <S.RadioLabel>Received</S.RadioLabel>
-              </S.RadioItem>
-              <S.RadioItem>
-                <S.RadioCircle />
-                <S.RadioLabel>Outstanding</S.RadioLabel>
-              </S.RadioItem>
-              <S.RadioItem>
-                <S.RadioCircle />
-                <S.RadioLabel>NA</S.RadioLabel>
-              </S.RadioItem>
-            </S.RadioGroup>
-          </S.Section>
-
-          <S.Section>
-            <S.SectionTitle>Excavations</S.SectionTitle>
-            <S.CheckItem>
-              <S.CheckBox />
-              <Text>Ground bearing acceptable</Text>
-            </S.CheckItem>
-            <S.CheckItem>
-              <S.CheckBox />
-              <Text>Specific foundation design</Text>
-            </S.CheckItem>
-            <S.CheckItem>
-              <S.CheckBox />
-              <Text>Engineer supervision</Text>
-            </S.CheckItem>
-            <S.CheckItem>
-              <S.CheckBox />
-              <Text>Hazards: floor heights & flood levels, ground stability</Text>
-            </S.CheckItem>
-            <S.CheckItem>
-              <S.CheckBox />
-              <Text>Council drains under building</Text>
-            </S.CheckItem>
-            <S.CheckItem>
-              <S.CheckBox />
-              <Text>Excavation: safe slope</Text>
-            </S.CheckItem>
-          </S.Section>
-
-          <S.Section>
-            <S.SectionTitle>Foundations: Piled/Drilled/Driven foundations</S.SectionTitle>
-            <S.CheckItem>
-              <S.CheckBox />
-              <Text>Pile heights correct for type of bracing element </Text>
-            </S.CheckItem>
-            <S.CheckItem>
-              <S.CheckBox />
-              <Text>Pile depth correct for pile type</Text>
-            </S.CheckItem>
-            <S.CheckItem>
-              <S.CheckBox />
-              <Text>Pile spacing for bearers</Text>
-            </S.CheckItem>
-            <S.CheckItem>
-              <S.CheckBox />
-              <Text>Floor height to ground level, 450mm crawl space</Text>
-            </S.CheckItem>
-          </S.Section>
         </S.Content>
       </ScrollView>
 
@@ -228,15 +240,6 @@ const S = {
     padding: 15px;
     border-radius: 10px;
   `,
-  // BackButton: styled.TouchableOpacity`
-  //   width: 40px;
-  //   height: 40px;
-  //   background-color: ${(p) => p.theme.white};
-  //   border-radius: 20px;
-  //   justify-content: center;
-  //   align-items: center;
-  //   margin-right: 10px;
-  // `,
   TaskDetails: styled.View`
     flex: 1;
   `,
@@ -268,18 +271,6 @@ const S = {
     height: 50px;
     border-radius: 25px;
   `,
-  // BackButton: styled.View`
-  //     width: 40px;
-  //     height: 40px;
-  //     background-color: ${(p) => p.theme.white};
-  //     border-radius: 20px;
-  //     margin-right: 10px;
-  // `,
-  // ButtonText: styled.Text`
-  //   color: white;
-  //   font-size: 16px;
-  //   margin-left: 10px;
-  // `,
   ButtonRow: styled.View`
     flex-direction: row;
     justify-content: space-between;
@@ -325,13 +316,20 @@ const S = {
       margin-bottom: 20px;
       padding-left: 10px;
   `,
-  CheckBox: styled.View`
+  CheckBox: styled.TouchableOpacity<{ checked: boolean }>`
       width: 20px;
       height: 20px;
       border: 2px solid ${(p) => p.theme.black};
       border-radius: 4px;
       margin-right: 10px;
       margin-left: 10px;
+      background-color: ${(p) => p.checked ? p.theme.black : 'transparent'};
+  `,
+  LoadingText: styled.Text`
+    font-size: 16px;
+    color: ${(p) => p.theme.black};
+    text-align: center;
+    margin: 20px 0;
   `,
   CheckItemText: styled.Text`
       color: #333333;
@@ -362,15 +360,15 @@ const S = {
   //   padding: 20px;
   //   background-color: #6366F1;
   // `,
-  PauseButton: styled.TouchableOpacity`
-    flex: 1;
-    height: 50px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    margin-right: 10px;
-  `,
-  FinishButton: styled.TouchableOpacity`
+  // PauseButton: styled.TouchableOpacity`
+  //   flex: 1;
+  //   height: 50px;
+  //   justify-content: center;
+  //   align-items: center;
+  //   border-radius: 10px;
+  //   margin-right: 10px;
+  // `,
+  SendButton: styled.TouchableOpacity`
     flex: 1;
     height: 50px;
     justify-content: center;
@@ -379,7 +377,7 @@ const S = {
   `,
   BottomBar: styled.View`
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     padding: 10px 20px;
     background-color: white;
     border-top-left-radius: 20px;
@@ -398,5 +396,10 @@ const S = {
     color: white;
     font-weight: bold;
     margin-left: 10px;
+  `,
+  DebugText: styled.Text`
+    font-size: 12px;
+    color: #666;
+    margin-top: 10px;
   `,
 };
