@@ -15,7 +15,7 @@ export interface ChecklistItem {
     itemName: string;
     itemDescription: string;
     itemType: number;
-    isChecked: boolean; // 添加这个属性
+    isChecked: boolean;
 }
 
 export interface Task {
@@ -27,14 +27,11 @@ export interface Task {
 }
 
 export const getInspectionChecklist = async (inspectionId: number): Promise<Task[]> => {
-    console.log('Base URL:', baseUrl); // 添加这行来检查 baseUrl
     try {
-        console.log('Calling API with inspectionId:', inspectionId);
         const response = await axios.get(`${baseUrl}/api/Inspection/getInspectionCheckList`, {
             params: { inspectionId },
             headers: { 'Accept': 'application/json' }
         });
-        console.log('API response:', response.data);
         return Array.isArray(response.data) ? response.data : [response.data];
     } catch (error) {
         if (axios.isAxiosError(error)) {

@@ -67,7 +67,7 @@ const DateText = styled.Text<{ isSelected: boolean }>`
 `;
 
 const DayText = styled.Text<{ isSelected: boolean }>`
-    color: ${(p) => p.isSelected ? 'white' : p.theme.GRAY};
+    color: ${(p) => p.isSelected ? 'white' : p.theme.black};
     font-size: 14px;
 `;
 
@@ -99,7 +99,9 @@ const TaskColumn = styled.View`
 const TimeSlot = styled.Text`
     height: 60px;
     text-align: right;
-    color: ${(p) => p.theme.GRAY};
+    color: ${(p) => p.theme.black};
+    font-size: 16px;
+    font-weight: bold;
     line-height: 60px;
     padding-right: 10px;
 `;

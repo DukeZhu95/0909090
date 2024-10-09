@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { ScrollView } from 'react-native';
-//import { getInspectionChecklist, Task } from 'src/api';
 import ScreenLayout from 'src/components/ScreenLayout';
 import { Svg, Path, Rect } from 'react-native-svg';
 const baseUrl = process.env.EXPO_PUBLIC_API_URL
@@ -187,7 +186,7 @@ export default function ChatScreen() {
               </S.TaskLocation>
               <S.TaskDistance>
                 <DistanceIcon />
-                <S.DistanceText>Destination is 500 meters away.</S.DistanceText>
+                <S.DistanceText>About 800m away</S.DistanceText>
               </S.TaskDistance>
             </S.TaskDetails>
             <S.Avatar source={UserAvatar} />
@@ -354,20 +353,6 @@ const S = {
   RadioLabel: styled.Text`
       color: #333333;
   `,
-  // BottomBar: styled.View`
-  //   flex-direction: row;
-  //   justify-content: space-between;
-  //   padding: 20px;
-  //   background-color: #6366F1;
-  // `,
-  // PauseButton: styled.TouchableOpacity`
-  //   flex: 1;
-  //   height: 50px;
-  //   justify-content: center;
-  //   align-items: center;
-  //   border-radius: 10px;
-  //   margin-right: 10px;
-  // `,
   SendButton: styled.TouchableOpacity`
     flex: 1;
     height: 50px;
